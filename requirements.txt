@@ -1,0 +1,9 @@
+# Ebury Data Pipeline - Extra Python dependencies
+# (apache-airflow is provided by the base Docker image)
+
+apache-airflow-providers-postgres==5.10.1
+dbt-postgres==1.7.2
+dbt-core==1.7.2
+psycopg2-binary==2.9.9
+pandas==2.1.1
+pyarrow==13.0.0

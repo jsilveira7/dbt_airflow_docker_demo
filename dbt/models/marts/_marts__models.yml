@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: fact_transactions
+    description: Transaction-level fact table with enriched dimensions and cumulative metrics
+    columns:
+      - name: transaction_id
+        description: Primary key — unique transaction identifier
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_customer')
+              field: customer_id
+      - name: product_id
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_product')
+              field: product_id
+      - name: transaction_date
+        tests:
+          - not_null
+      - name: quantity
+        tests:
+          - not_null
+      - name: unit_price
+        tests:
+          - not_null
+      - name: total_amount
+        tests:
+          - not_null
+      - name: volume_category
+        tests:
+          - accepted_values:
+              values: ['High Volume', 'Medium Volume', 'Low Volume']
+      - name: price_category
+        tests:
+          - accepted_values:
+              values: ['Premium', 'Standard', 'Budget']
+
+  - name: dim_customer
+    description: Customer dimension with segmentation and activity tracking
+    columns:
+      - name: customer_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: customer_status
+        tests:
+          - accepted_values:
+              values: ['Active', 'At Risk', 'Inactive']
+      - name: total_transactions
+        tests:
+          - not_null
+
+  - name: dim_product
+    description: Product dimension with summary metrics
+    columns:
+      - name: product_id
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: product_name
+        tests:
+          - not_null
+      - name: total_transactions
+        tests:
+          - not_null
+      - name: avg_unit_price
+        tests:
+          - not_null

@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: stg_transactions
+    description: Cleaned transactions that pass all quality checks
+    columns:
+      - name: transaction_id
+        description: Unique transaction identifier (numeric)
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: Unique customer identifier
+        tests:
+          - not_null
+      - name: transaction_date
+        description: Parsed and validated transaction date
+        tests:
+          - not_null
+      - name: product_id
+        description: Product identifier, enriched from product_name when missing
+        tests:
+          - not_null
+      - name: quantity
+        description: Units purchased (validated numeric)
+        tests:
+          - not_null
+      - name: price
+        description: Unit price (validated numeric)
+        tests:
+          - not_null
+      - name: total_amount
+        description: Derived field — quantity * price
+
+  - name: audit_transactions
+    description: Rows rejected from staging due to NULL quantity, price, or tax
+    columns:
+      - name: transaction_id
+        tests:
+          - not_null
+      - name: rejection_reason
+        description: Human-readable reason the row was rejected
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['NULL quantity', 'NULL price', 'NULL tax']

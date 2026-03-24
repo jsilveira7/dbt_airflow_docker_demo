@@ -1,0 +1,38 @@
+version: 2
+
+sources:
+  - name: ebury_raw
+    schema: raw
+    description: Raw data source containing customer transactions loaded from CSV
+    tables:
+      - name: customer_transactions_raw
+        description: Raw customer transaction data loaded from CSV
+        loaded_at_field: loaded_at
+        freshness:
+          warn_after: { count: 24, period: hour }
+          error_after: { count: 48, period: hour }
+        columns:
+          - name: transaction_id
+            description: Unique transaction identifier (may contain non-numeric prefixes in raw)
+            tests:
+              - not_null
+          - name: customer_id
+            description: Unique customer identifier (may be null or float-formatted)
+          - name: transaction_date
+            description: Date when transaction occurred (mixed formats in source)
+            tests:
+              - not_null
+          - name: product_id
+            description: Unique product identifier (may contain alphabetic prefixes)
+          - name: product_name
+            description: Name of the product
+          - name: quantity
+            description: Number of units purchased (may be null or non-numeric)
+          - name: price
+            description: Unit price of the product (may contain text values)
+          - name: tax
+            description: Tax amount for the transaction (may contain text values)
+          - name: loaded_at
+            description: Timestamp when record was loaded into the raw table
+          - name: source_file
+            description: Source file name
