@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: ebury_raw
+  - name: sales_demo_raw
     schema: raw
     description: Raw data source containing customer transactions loaded from CSV
     tables:

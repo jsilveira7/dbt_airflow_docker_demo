@@ -43,7 +43,7 @@ airflow connections add postgres_default \
   --conn-login "${POSTGRES_USER:-airflow}" \
   --conn-password "${POSTGRES_PASSWORD:-airflow}" \
   --conn-port 5432 \
-  --conn-schema "ebury_analytics"
+  --conn-schema "sales_demo_analytics"
 
 echo "✅ Airflow initialization complete"
 

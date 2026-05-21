@@ -3,7 +3,7 @@ version: '3.8'
 services:
   postgres:
     image: postgres:15-alpine
-    container_name: ebury_postgres
+    container_name: sales_demo_postgres
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-airflow}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-airflow}
@@ -19,11 +19,11 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - ebury_network
+      - sales_demo_network
 
   airflow-webserver:
-    image: ebury-airflow:latest
-    container_name: ebury_airflow_webserver
+    image: sales_demo-airflow:latest
+    container_name: sales_demo_airflow_webserver
     build:
       context: .
       dockerfile: Dockerfile
@@ -42,7 +42,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-airflow}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-airflow}
       POSTGRES_HOST: postgres
-      POSTGRES_DB: ebury_analytics
+      POSTGRES_DB: sales_demo_analytics
     ports:
       - "8080:8080"
     volumes:
@@ -52,12 +52,12 @@ services:
       - ./dbt:/opt/dbt
       - airflow_logs:/opt/airflow/logs
     networks:
-      - ebury_network
+      - sales_demo_network
     restart: unless-stopped
 
   airflow-scheduler:
-    image: ebury-airflow:latest
-    container_name: ebury_airflow_scheduler
+    image: sales_demo-airflow:latest
+    container_name: sales_demo_airflow_scheduler
     build:
       context: .
       dockerfile: Dockerfile
@@ -74,7 +74,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-airflow}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-airflow}
       POSTGRES_HOST: postgres
-      POSTGRES_DB: ebury_analytics
+      POSTGRES_DB: sales_demo_analytics
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./airflow/plugins:/opt/airflow/plugins
@@ -82,7 +82,7 @@ services:
       - ./dbt:/opt/dbt
       - airflow_logs:/opt/airflow/logs
     networks:
-      - ebury_network
+      - sales_demo_network
     restart: unless-stopped
 
 volumes:
@@ -90,5 +90,5 @@ volumes:
   airflow_logs:
 
 networks:
-  ebury_network:
+  sales_demo_network:
     driver: bridge

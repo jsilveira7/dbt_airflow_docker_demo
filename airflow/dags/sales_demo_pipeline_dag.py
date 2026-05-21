@@ -1,5 +1,5 @@
 """
-Ebury Data Pipeline DAG
+Sales Demo Pipeline DAG
 Orchestrates data ingestion, transformation, and quality checks.
 """
 
@@ -191,13 +191,13 @@ def generate_summary(**context):
 
 # Define DAG
 dag = DAG(
-    'ebury_data_pipeline',
+    'sales_demo_pipeline',
     default_args=DEFAULT_ARGS,
     description='Data pipeline for customer transactions: ingest, transform, and aggregate',
     schedule_interval='0 1 * * *',  # Daily at 1 AM
     start_date=datetime(2024, 1, 1),
     catchup=False,
-    tags=['ebury', 'production'],
+    tags=['sales_demo', 'production'],
 )
 
 # Create tasks

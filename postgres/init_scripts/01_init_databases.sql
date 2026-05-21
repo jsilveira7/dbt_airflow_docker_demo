@@ -1,8 +1,8 @@
--- Single database architecture: all schemas in ebury_analytics
+-- Single database architecture: all schemas in sales_demo_analytics
 -- Schemas: raw (ingested data), staging (cleaned data), marts (analytics tables)
-CREATE DATABASE ebury_analytics;
+CREATE DATABASE sales_demo_analytics;
 
-\c ebury_analytics
+\c sales_demo_analytics
 
 CREATE SCHEMA IF NOT EXISTS raw AUTHORIZATION airflow;
 CREATE SCHEMA IF NOT EXISTS staging AUTHORIZATION airflow;

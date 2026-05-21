@@ -1,4 +1,4 @@
-# Ebury Data Pipeline - Extra Python dependencies
+# Sales Demo Pipeline - Extra Python dependencies
 # (apache-airflow is provided by the base Docker image)
 
 apache-airflow-providers-postgres==5.10.1

@@ -15,13 +15,13 @@ logs:                        ## Tail service logs
 	docker-compose logs -f
 
 trigger:                     ## Trigger the DAG manually
-	docker-compose exec airflow-webserver airflow dags trigger ebury_data_pipeline
+	docker-compose exec airflow-webserver airflow dags trigger sales_demo_pipeline
 
 test:                        ## Run dbt tests inside the container
 	docker-compose exec airflow-webserver bash -c "cd /opt/dbt && DBT_PROFILES_DIR=/opt/dbt dbt test --target dev"
 
 validate:                    ## Quick row-count check on mart tables
-	docker-compose exec postgres psql -U airflow -d ebury_analytics \
+	docker-compose exec postgres psql -U airflow -d sales_demo_analytics \
 		-c "SELECT 'fact_transactions' AS tbl, COUNT(*) FROM marts.fact_transactions UNION ALL SELECT 'dim_customer', COUNT(*) FROM marts.dim_customer UNION ALL SELECT 'dim_product', COUNT(*) FROM marts.dim_product;"
 
 clean:                       ## Remove all containers, images, and volumes

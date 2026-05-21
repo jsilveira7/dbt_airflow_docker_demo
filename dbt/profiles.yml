@@ -1,4 +1,4 @@
-ebury:
+sales_demo:
   outputs:
     dev:
       type: postgres
@@ -6,7 +6,7 @@ ebury:
       user: "{{ env_var('POSTGRES_USER', 'airflow') }}"
       password: "{{ env_var('POSTGRES_PASSWORD', 'airflow') }}"
       port: "{{ env_var('POSTGRES_PORT', 5432) | as_number }}"
-      dbname: ebury_analytics
+      dbname: sales_demo_analytics
       schema: staging
       threads: 4
       keepalives_idle: 0
@@ -17,7 +17,7 @@ ebury:
       user: "{{ env_var('POSTGRES_USER', 'airflow') }}"
       password: "{{ env_var('POSTGRES_PASSWORD', 'airflow') }}"
       port: "{{ env_var('POSTGRES_PORT', 5432) | as_number }}"
-      dbname: ebury_analytics
+      dbname: sales_demo_analytics
       schema: marts
       threads: 4
       keepalives_idle: 0

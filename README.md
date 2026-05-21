@@ -1,4 +1,4 @@
-# Ebury Case Study — Data Pipeline
+# Sales Demo — Data Pipeline
 
 An end-to-end data pipeline for ingesting, cleaning, and modelling customer transaction data using **Apache Airflow**, **dbt**, and **PostgreSQL**, fully containerised with Docker.
 
@@ -43,7 +43,7 @@ An end-to-end data pipeline for ingesting, cleaning, and modelling customer tran
 ```
 airflow/
 ├── dags/
-│   └── ebury_data_pipeline_dag.py   # Orchestration DAG
+│   └── sales_demo_pipeline_dag.py   # Orchestration DAG
 └── plugins/
     └── custom_operators.py           # Reusable data-quality operators
 
@@ -102,18 +102,18 @@ docker-compose up -d --build
 
 ### 3. Run the Pipeline
 
-Open the Airflow UI at **http://localhost:8080** (user: `airflow` / pass: `airflow`), find the `ebury_data_pipeline` DAG, and trigger it.
+Open the Airflow UI at **http://localhost:8080** (user: `airflow` / pass: `airflow`), find the `sales_demo_pipeline` DAG, and trigger it.
 
 Alternatively:
 
 ```bash
-docker-compose exec airflow-webserver airflow dags trigger ebury_data_pipeline
+docker-compose exec airflow-webserver airflow dags trigger sales_demo_pipeline
 ```
 
 ### 4. Verify Results
 
 ```bash
-docker-compose exec postgres psql -U airflow -d ebury_analytics \
+docker-compose exec postgres psql -U airflow -d sales_demo_analytics \
   -c "SELECT COUNT(*) FROM marts.fact_transactions;"
 ```
 

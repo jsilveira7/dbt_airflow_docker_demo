@@ -47,7 +47,7 @@ AIRFLOW_SECRET_KEY=Nx8_A9Lr3gH8xK0dFvWpQjZm4nB7cE2rT5sU6vX9yZ  # Airflow secret 
 
 ```bash
 # Navigate to project directory
-cd ebury_case_study
+cd sales_demo
 
 # Verify Docker is running
 docker --version
@@ -67,7 +67,7 @@ docker-compose build
 **What happens:**
 - Builds custom Airflow image from `Dockerfile`
 - Installs dbt-core, dbt-postgres, pandas, psycopg2
-- Tags as `ebury-airflow:latest`
+- Tags as `sales_demo-airflow:latest`
 
 ### Step 3: Start Services
 
@@ -96,9 +96,9 @@ docker-compose ps
 Expected output:
 ```
 NAME                        STATUS
-ebury_postgres              Up (healthy)
-ebury_airflow_webserver     Up (running)
-ebury_airflow_scheduler     Up (running)
+sales_demo_postgres              Up (healthy)
+sales_demo_airflow_webserver     Up (running)
+sales_demo_airflow_scheduler     Up (running)
 ```
 
 ## Triggering the Pipeline
@@ -111,7 +111,7 @@ ebury_airflow_scheduler     Up (running)
    - Password: `airflow`
 
 2. **Find the DAG**
-   - Look for: `ebury_data_pipeline`
+   - Look for: `sales_demo_pipeline`
    - Appears in the DAG list within 30-60 seconds
 
 3. **Trigger Execution**
@@ -130,7 +130,7 @@ ebury_airflow_scheduler     Up (running)
 ```bash
 # Trigger DAG from command line
 docker-compose exec airflow-webserver \
-  airflow dags trigger ebury_data_pipeline
+  airflow dags trigger sales_demo_pipeline
 
 # Monitor scheduler logs
 docker-compose logs -f airflow-scheduler
@@ -153,15 +153,15 @@ Total Runtime    ~10-15 min
 **Stage 1: Data Ingestion**
 - Loads CSV to PostgreSQL raw schema
 - Task: `load_csv_to_postgres`
-- Database: `ebury_raw.staging.transactions`
+- Database: `sales_demo_raw.staging.transactions`
 
 **Stage 2: Data Transformation**
 - Cleans and validates data with dbt
-- Task: `ebury_data_pipeline_transform`
+- Task: `sales_demo_pipeline_transform`
 - Models created:
-  - `ebury_analytics.staging.stg_transactions` - Cleaned data
-  - `ebury_analytics.marts.dim_customer` - Customer dimension
-  - `ebury_analytics.marts.fact_transactions` - Transaction facts
+  - `sales_demo_analytics.staging.stg_transactions` - Cleaned data
+  - `sales_demo_analytics.marts.dim_customer` - Customer dimension
+  - `sales_demo_analytics.marts.fact_transactions` - Transaction facts
 
 **Stage 3: Data Quality Validation**
 - Runs dbt tests
@@ -196,12 +196,12 @@ docker-compose logs -f
 ```bash
 # Open PostgreSQL prompt
 docker-compose exec postgres \
-  psql -U airflow -d ebury_analytics
+  psql -U airflow -d sales_demo_analytics
 
 # Useful queries
-\dt ebury_analytics.staging.*;           # List staging tables
-\dt ebury_analytics.marts.*;             # List mart tables
-SELECT COUNT(*) FROM ebury_analytics.marts.fact_transactions;
+\dt sales_demo_analytics.staging.*;           # List staging tables
+\dt sales_demo_analytics.marts.*;             # List mart tables
+SELECT COUNT(*) FROM sales_demo_analytics.marts.fact_transactions;
 ```
 
 ### Check Pipeline Status
@@ -213,7 +213,7 @@ docker-compose exec airflow-webserver \
 
 # Check specific DAG
 docker-compose exec airflow-webserver \
-  airflow dags list-runs --dag-id ebury_data_pipeline
+  airflow dags list-runs --dag-id sales_demo_pipeline
 ```
 
 ## Customization
@@ -234,7 +234,7 @@ docker-compose exec airflow-webserver \
 
 ### Changing Pipeline Schedule
 
-Edit `airflow/dags/ebury_data_pipeline_dag.py`:
+Edit `airflow/dags/sales_demo_pipeline_dag.py`:
 
 ```python
 # Change schedule_interval (line with schedule)
@@ -248,7 +248,7 @@ Edit `airflow/dags/ebury_data_pipeline_dag.py`:
 ### Loading Different CSV File
 
 1. Place CSV in project root
-2. Edit `airflow/dags/ebury_data_pipeline_dag.py`
+2. Edit `airflow/dags/sales_demo_pipeline_dag.py`
 3. Change `csv_file_path` variable
 4. Retrigger DAG
 
@@ -297,7 +297,7 @@ docker-compose logs
 ```bash
 # Check DAG syntax
 docker-compose exec airflow-webserver \
-  python -m py_compile airflow/dags/ebury_data_pipeline_dag.py
+  python -m py_compile airflow/dags/sales_demo_pipeline_dag.py
 
 # Restart scheduler
 docker-compose restart airflow-scheduler
@@ -335,7 +335,7 @@ docker stats
 | Start pipeline | `docker-compose up -d` |
 | Stop pipeline | `docker-compose down` |
 | View logs | `docker-compose logs -f` |
-| Connect to DB | `docker-compose exec postgres psql -U airflow -d ebury_analytics` |
+| Connect to DB | `docker-compose exec postgres psql -U airflow -d sales_demo_analytics` |
 | Rebuild image | `docker-compose build` |
 | Full reset | `docker-compose down -v && docker-compose up -d` |
 

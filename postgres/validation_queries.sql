@@ -6,15 +6,15 @@
 -- ============================================
 
 -- Check if databases exist
-SELECT datname FROM pg_database WHERE datname IN ('ebury_raw', 'ebury_analytics', 'airflow');
+SELECT datname FROM pg_database WHERE datname IN ('sales_demo_raw', 'sales_demo_analytics', 'airflow');
 
--- Check schemas in ebury_raw
-\c ebury_raw
+-- Check schemas in sales_demo_raw
+\c sales_demo_raw
 SELECT schema_name FROM information_schema.schemata 
 WHERE schema_name IN ('raw', 'staging', 'marts');
 
--- Check schemas in ebury_analytics
-\c ebury_analytics
+-- Check schemas in sales_demo_analytics
+\c sales_demo_analytics
 SELECT schema_name FROM information_schema.schemata 
 WHERE schema_name IN ('staging', 'marts');
 
@@ -23,7 +23,7 @@ WHERE schema_name IN ('staging', 'marts');
 -- ============================================
 
 -- Check raw table
-\c ebury_raw
+\c sales_demo_raw
 SELECT table_name FROM information_schema.tables 
 WHERE table_schema = 'raw' AND table_name LIKE '%transaction%';
 
@@ -160,8 +160,8 @@ HAVING COUNT(*) > 1;
 -- 9. TEMPORAL RANGE VERIFICATION
 -- ============================================
 
--- Date range in fact table (switch to ebury_analytics if not already)
-\c ebury_analytics
+-- Date range in fact table (switch to sales_demo_analytics if not already)
+\c sales_demo_analytics
 SELECT 
     MIN(transaction_date) as earliest_date,
     MAX(transaction_date) as latest_date,

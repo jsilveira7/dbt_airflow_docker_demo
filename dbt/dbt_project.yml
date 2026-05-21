@@ -1,8 +1,8 @@
-name: 'ebury_data_pipeline'
+name: 'sales_demo_pipeline'
 version: '1.0.0'
 config-version: 2
 
-profile: 'ebury'
+profile: 'sales_demo'
 
 model-paths: ["models"]
 analysis-paths: ["analyses"]
@@ -17,7 +17,7 @@ clean-targets:
   - "dbt_packages"
 
 models:
-  ebury_data_pipeline:
+  sales_demo_pipeline:
     staging:
       +materialized: view
     marts:

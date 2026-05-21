@@ -1,5 +1,5 @@
 """
-Ebury Data Pipeline - Custom Airflow Operators
+Sales Demo Pipeline - Custom Airflow Operators
 """
 
 from __future__ import annotations

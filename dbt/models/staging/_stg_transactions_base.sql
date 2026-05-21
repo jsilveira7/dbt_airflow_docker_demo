@@ -15,7 +15,7 @@ WITH raw_data AS (
         tax,
         loaded_at,
         source_file
-    FROM {{ source('ebury_raw', 'customer_transactions_raw') }}
+    FROM {{ source('sales_demo_raw', 'customer_transactions_raw') }}
 ),
 
 data_quality_checks AS (
